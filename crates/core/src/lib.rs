@@ -169,6 +169,8 @@ mod json;
 mod ndjson;
 mod node;
 #[cfg(feature = "object-store")]
+mod object_store;
+#[cfg(feature = "object-store")]
 mod resolver;
 mod statistics;
 #[cfg(feature = "validate")]
@@ -176,6 +178,9 @@ mod validate;
 mod value;
 
 use std::fmt::Display;
+
+#[cfg(feature = "object-store")]
+pub use object_store::parse_url_opts;
 
 #[cfg(feature = "object-store")]
 pub use resolver::Resolver;
