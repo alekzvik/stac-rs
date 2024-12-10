@@ -1,4 +1,6 @@
 use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value};
+use stac::Link;
 use stac_api::{Context, Item};
 
 /// A page of search results.
@@ -9,13 +11,34 @@ pub struct Page {
     pub features: Vec<Item>,
 
     /// The next id.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub next: Option<String>,
 
     /// The previous id.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub prev: Option<String>,
 
     /// The search context.
-    pub context: Context,
+    ///
+    /// This was removed in pgstac v0.9
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub context: Option<Context>,
+
+    /// The number of values returned.
+    ///
+    /// Added in pgstac v0.9
+    #[serde(rename = "numberReturned", skip_serializing_if = "Option::is_none")]
+    pub number_returned: Option<usize>,
+
+    /// Links
+    ///
+    /// Added in pgstac v0.9
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub links: Vec<Link>,
+
+    /// Additional fields.
+    #[serde(flatten)]
+    pub additional_fields: Map<String, Value>,
 }
 
 impl Page {
